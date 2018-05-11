@@ -38,47 +38,34 @@ def get_answer_1():
 
 
 def get_answer_2():
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
     query = """ SELECT authors.name, authoridsum.sum 
                 FROM authoridsum 
                 LEFT JOIN authors ON authors.id = authoridsum.author 
                 GROUP BY authors.name, authoridsum.sum 
                 ORDER BY authoridsum.sum DESC;"""
-    c.execute(query)
-    rows = c.fetchall()
+    rows = execute_query(query)
     print('{:<50} {:<30} \n').format('Author Name', '# of hits')
     for row in rows:
         print ('{:<50} {:<30}').format(row[0], row[1])
     print("\n")
-    db.close()
-    return rows
 
 
 def get_answer_3():
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    query = """SELECT day, \"200oks\", totallogs, 100-percentlogs 
-    FROM
-    (SELECT ROUND(\"200oks\"*100.00/totallogs, 1) as \"percentlogs\", day,
-    totallogs, \"200oks\" 
-    FROM (SELECT daylogstotal.day as \"day\",
-    daylogs200ok.\"200_oks\" as \"200oks\", daylogstotal.\"Total_Logs\" as
-    \"totallogs\" FROM daylogstotal LEFT JOIN daylogs200ok ON daylogstotal.
-    \"day\" = daylogs200ok.\"day\") as subquery) as subquery2 WHERE 
-    percentlogs < 99.0;"""
-    c.execute(query)
-    rows = c.fetchall()
+    query = """ SELECT day, ok_count, totallogs, 100-percentlogs as percent_error
+            FROM (SELECT ROUND(ok_count*100.00/totallogs, 1) as percentlogs, day, totallogs, ok_count 
+            FROM (SELECT daylogstotal.day as day, daylogs200ok.ok_count as ok_count, daylogstotal.Total_Logs as totallogs 
+            FROM daylogstotal LEFT JOIN daylogs200ok ON daylogstotal.day = daylogs200ok.day) as subquery) as subquery2 
+            WHERE percentlogs < 99.0;
+    """
+    rows = execute_query(query)
     print(
-        '{:<40} {:<20} {:<20} {:<20} \n').format('Day',
-        '# of 200Oks Logs', '# of Total Logs', 'Percent of Errors')
+        '{:<40} {:<20} {:<20} {:<20} \n'.format('Day',
+        '# of 200Oks Logs', '# of Total Logs', 'Percent of Errors'))
     for row in rows:
         print (
-                "{:<40} {:<20} {:<20} {:<20}").format(str(row[0]),
-                row[1], row[2], row[3])
+                "{:<40} {:<20} {:<20} {:<20}".format(str(row[0]),
+                row[1], row[2], row[3]))
     print("\n")
-    db.close()
-    return rows
 
 
 def main():
