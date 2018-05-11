@@ -4,19 +4,20 @@ import psycopg2
 
 DBNAME = "news"
 
+
 def execute_query(query):
     """
-    execute_query takes an SQL query as a parameter, 
+    execute_query takes an SQL query as a parameter,
     executes the query and returns the results as a lits of tuples
 
-    args: 
-        query - (string) an SQL query statemnt to be executed. 
+    args:
+        query - (string) an SQL query statemnt to be executed.
 
-    returns: 
-        A list of tuple containg the results of the query. 
+    returns:
+        A list of tuple containg the results of the query.
     """
 
-    try: 
+    try:
         db = psycopg2.connect(database=DBNAME)
         c = db.cursor()
         c.execute(query)
@@ -26,22 +27,25 @@ def execute_query(query):
     except (Exception, psyocopg2.DatabaseError) as error:
         print(error)
 
+
 def get_answer_1():
-    """This method opens up the news database, finds out how often each article has been been pathed to, orders the articles from most paths to least paths, and then prints the results"""
+    """This method opens up the news database, finds out how often each article
+    has been been pathed to, orders the articles from most paths to least paths
+    ,and then prints the results"""
+
     query = """SELECT * FROM titlecount LIMIT 3;"""
-    rows = execute_query(query)    
+    rows = execute_query(query)
     print('{:<50} {:<30} \n').format('Article Name', '# of hits')
     for row in rows:
         print ('{:<50} {:<30}').format(row[0], row[1])
     print("\n")
-    
 
 
 def get_answer_2():
-    query = """ SELECT authors.name, authoridsum.sum 
-                FROM authoridsum 
-                LEFT JOIN authors ON authors.id = authoridsum.author 
-                GROUP BY authors.name, authoridsum.sum 
+    query = """ SELECT authors.name, authoridsum.sum
+                FROM authoridsum
+                LEFT JOIN authors ON authors.id = authoridsum.author
+                GROUP BY authors.name, authoridsum.sum
                 ORDER BY authoridsum.sum DESC;"""
     rows = execute_query(query)
     print('{:<50} {:<30} \n').format('Author Name', '# of hits')
@@ -52,19 +56,20 @@ def get_answer_2():
 
 def get_answer_3():
     query = """ SELECT day, ok_count, totallogs, 100-percentlogs as percent_error
-            FROM (SELECT ROUND(ok_count*100.00/totallogs, 1) as percentlogs, day, totallogs, ok_count 
-            FROM (SELECT daylogstotal.day as day, daylogs200ok.ok_count as ok_count, daylogstotal.Total_Logs as totallogs 
-            FROM daylogstotal LEFT JOIN daylogs200ok ON daylogstotal.day = daylogs200ok.day) as subquery) as subquery2 
-            WHERE percentlogs < 99.0;
-    """
+            FROM (SELECT ROUND(ok_count*100.00/totallogs, 1) as percentlogs,
+            day, totallogs, ok_count
+            FROM (SELECT daylogstotal.day as day, daylogs200ok.ok_count
+            as ok_count, daylogstotal.Total_Logs as totallogs
+            FROM daylogstotal LEFT JOIN daylogs200ok
+            ON daylogstotal.day = daylogs200ok.day) as subquery) as subquery2
+            WHERE percentlogs < 99.0;"""
     rows = execute_query(query)
-    print(
-        '{:<40} {:<20} {:<20} {:<20} \n'.format('Day',
-        '# of 200Oks Logs', '# of Total Logs', 'Percent of Errors'))
+    print('{:<40} {:<20} {:<20} {:<20} \n'
+          .format('Day', '# of 200Oks Logs', '# of Total Logs',
+                  'Percent of Errors'))
     for row in rows:
-        print (
-                "{:<40} {:<20} {:<20} {:<20}".format(str(row[0]),
-                row[1], row[2], row[3]))
+        print ("{:<40} {:<20} {:<20} {:<20}"
+               .format(str(row[0]), row[1], row[2], row[3]))
     print("\n")
 
 
