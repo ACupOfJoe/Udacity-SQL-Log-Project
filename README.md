@@ -1,3 +1,4 @@
+
 # Introduction
 This project uses psycopg2 to query a mock PostgreSQL database for a fictional news website. 
 
@@ -91,3 +92,9 @@ FROM log GROUP BY day;
 AS SELECT time::date AS day, count(*) as error_count FROM log 
 WHERE status = '404 NOT FOUND' GROUP BY day;
 > This article holds the total number of 404 NOT FOUND errors grouped by day. 
+# Running the Script 
+To run the script do the following: 
+1. SSH into the Vagrant VM
+2. CD into the folder containing answers.py 
+3. Type "python answers.py" and press enter. 
+4. Three tables answering each question should appear on your screen.   
