@@ -26,6 +26,32 @@ The python script "answers.py" answers three questions:
 	2. Who are the most popular article authors of all time?
 	3. On which days did more than 1% of requests lead to errors?
 
+Requirements: 
+	1. Vagrant 
+		* https://www.vagrantup.com/downloads.html
+	2. VirtualBox 
+		* https://www.virtualbox.org/
+
+	If not relying on vagrant, set up environment with: 
+	1. Python 2.7 
+	2. PostgreSQL 
+	3. psycopg2
+
+How to create the news database: 
+	Setting up the virtual environment: 
+	1. Download the fsnd-virtual-machine.zip file from the git repository. 
+	2. Unzip the file and move the folder somewhere easily accessible. 
+	3. Move the newsdata.sql file into  ".../FSND-Virtual-Machine/vagrant"
+	4. Open a terminal ("Git Bash" for Windows or Terminal for Linux/Mac) (after installing Vagrant and VirtualBox)
+	5. Cd (Change Directory) into FSND-Virtual-Machine/vagrant
+	6. Type "vagrant up" 
+	7. Wait for initialization the virtual machine. 
+	8. Type "vagrant ssh" to log into the virtual machine 
+	Creating the database: 
+	1. After logging into the virtual machine, type "psql -d news -f -newsdata.sql" for the first time you set up the database
+	2. After setting up the database initially, simply type "psql -d news" to access the database. 
+
+	
 
 In order to run the code, you will need to have these views: 
 
