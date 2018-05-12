@@ -14,6 +14,6 @@ Anonymous Contributor         |                     171762
 Markoff Chaney                |                     85387
 
 # 3. On which days did more than 1% of requests lead to errors
-Day                        |# of 200Oks Logs |# of Total Logs |Percent of Errors
-|--------------------------|-----------------|----------------|-----------------------|
-2016-07-17 00:00:00+00:00  | 54642           | 55907          | 97.7
+Day                        | # of 404 Errors Logs |# of Total Logs |Percent of Errors
+|--------------------------|----------------------|----------------|-----------------------|
+2016-07-17 00:00:00+00:00  | 1265                 | 55907          | 2.3
