@@ -41,7 +41,7 @@ How to create the news database:
 	Setting up the virtual environment: 
 	1. Download the fsnd-virtual-machine.zip file from the git repository. 
 	2. Unzip the file and move the folder somewhere easily accessible. 
-	3. Move the newsdata.sql file into  ".../FSND-Virtual-Machine/vagrant"
+	3. Move the newsdata.sql file from the newsdata.zip file into  ".../FSND-Virtual-Machine/vagrant"
 	4. Open a terminal ("Git Bash" for Windows or Terminal for Linux/Mac) (after installing Vagrant and VirtualBox)
 	5. Cd (Change Directory) into FSND-Virtual-Machine/vagrant
 	6. Type "vagrant up" 
