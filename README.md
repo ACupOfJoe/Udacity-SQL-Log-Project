@@ -51,24 +51,40 @@ How to create the news database:
 	1. After logging into the virtual machine, type "psql -d news -f -newsdata.sql" for the first time you set up the database
 	2. After setting up the database initially, simply type "psql -d news" to access the database. 
 
-	
+
 
 In order to run the code, you will need to have these views: 
 
-1. CREATE VIEW titlecount AS SELECT subquery.title, COUNT(*) FROM (SELECT path, slug, articles.title FROM log LEFT JOIN articles ON path LIKE '%' || slug || '%') as subquery GROUP BY subquery.title ORDER BY COUNT(*) DESC OFFSET 1;
+1.CREATE VIEW titlecount  
+AS SELECT title, COUNT(*) as count 
+FROM articles LEFT JOIN log 
+ON log.path = concat('/article/', articles.slug) 
+GROUP BY title;
+
 
 > This view sorts through the log table and groups the paths by article slug/title.
 
 		
-2. CREATE VIEW authortitlecount AS SELECT articles.author, articles.title, count FROM titlecount JOIN articles ON titlecount.title = articles.title;
+2. CREATE VIEW authortitlecount 
+AS SELECT articles.author, articles.title, count 
+FROM titlecount JOIN articles 
+ON titlecount.title = articles.title;
 > This view holds the author IDs, the title of the article, and the number of times each article was hit.
 	
-3. CREATE VIEW authoridsum AS SELECT authortitlecount.author, SUM(count) FROM authortitlecount GROUP BY author ORDER BY SUM(count) DESC;
+3. CREATE VIEW authoridsum AS 
+SELECT authortitlecount.author, SUM(count) 
+FROM authortitlecount 
+FROUP BY author 
+ORDER BY SUM(count) DESC;
 > This view holds the author IDs and the sum of the counts of each author IDs articles.
   
-4. CREATE VIEW daylogstotal AS SELECT date_trunc('day', time) as day, count(*) as Total_Logs FROM log GROUP BY day;
+4. CREATE VIEW daylogstotal AS 
+SELECT date_trunc('day', time) as day, 
+count(*) as Total_Logs 
+FROM log GROUP BY day;
 > This view holds then total number of logs grouped by day.
 
 
-5. CREATE VIEW daylogs200ok AS SELECT date_trunc('day', time) as day, count(*) as ok_count FROM log WHERE status = '200 OK' GROUP BY day;
-> This article holds the total number of 200OKs grouped by day. 
+5. CREATE VIEW daylogs404errors 
+AS SELECT time::date AS day, count(*) as error_count FROM log WHERE status = '404 NOT FOUND' GROUP BY day;
+> This article holds the total number of 404 NOT FOUND errors grouped by day. 
