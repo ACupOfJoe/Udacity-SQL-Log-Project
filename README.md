@@ -62,7 +62,9 @@ In order to run the code, you will need to have these views:
 AS SELECT title, COUNT(*) as count 
 FROM articles LEFT JOIN log 
 ON log.path = concat('/article/', articles.slug) 
-GROUP BY title;
+GROUP BY title
+ORDER BY count
+DESC;
 
 
 > This view sorts through the log table and groups the paths by article slug/title.
