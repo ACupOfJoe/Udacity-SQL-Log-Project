@@ -28,7 +28,7 @@ def execute_query(query):
         print(error)
 
 
-def get_answer_1():
+def print_three_most_popular_articles():
     """
     This method provides the answer to the question:
     What are the most popular three articles of all time?
@@ -46,7 +46,7 @@ def get_answer_1():
     print("\n")
 
 
-def get_answer_2():
+def print_most_popular_article_authors_of_all_time():
     """
     This method provides the answer to the question:
     Who are the most popular article authors of all time?
@@ -67,7 +67,7 @@ def get_answer_2():
     print("\n")
 
 
-def get_answer_3():
+def print_high_error_days():
     """
     This method provides the answer to the question:
     On which days did more than 1% of requests lead to errors?
@@ -95,9 +95,9 @@ def get_answer_3():
 
 
 def main():
-    get_answer_1()
-    get_answer_2()
-    get_answer_3()
+    print_three_most_popular_articles()
+    print_most_popular_article_authors_of_all_time()
+    print_high_error_days()
 
 if __name__ == "__main__":
     main()
