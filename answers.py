@@ -29,9 +29,14 @@ def execute_query(query):
 
 
 def get_answer_1():
-    """This method opens up the news database, finds out how often each article
-    has been been pathed to, orders the articles from most paths to least paths
-    ,and then prints the results"""
+    """
+    This method provides the answer to the question:
+    What are the most popular three articles of all time?
+
+    This method opens up the news database, finds out how often each article
+    has been been pathed to, orders the articles from most paths to least
+    paths, and then prints the results. The only requirement to run the
+    command is that the titlecount view is created. """
 
     query = """SELECT * FROM titlecount LIMIT 3;"""
     rows = execute_query(query)
@@ -42,6 +47,14 @@ def get_answer_1():
 
 
 def get_answer_2():
+    """
+    This method provides the answer to the question:
+    Who are the most popular article authors of all time?
+
+    This method opens up the database and executes a query that selects the
+    author's name and the sum of the hits on each article written by
+    a given author. It then prints out the results.
+    """
     query = """ SELECT authors.name, authoridsum.sum
                 FROM authoridsum
                 LEFT JOIN authors ON authors.id = authoridsum.author
@@ -55,13 +68,21 @@ def get_answer_2():
 
 
 def get_answer_3():
+    """
+    This method provides the answer to the question:
+    On which days did more than 1% of requests lead to errors?
+
+    This method opens up the database and executes a query that
+    """
     query = """ SELECT day, error_count, totallogs, percentlogs as percent_error
             FROM (SELECT ROUND(error_count*100.00/totallogs, 1) as percentlogs,
             day, totallogs, error_count
-            FROM (SELECT daylogs404errors.day as day, daylogs404errors.error_count
-            as error_count, daylogstotal.Total_Logs as totallogs
+            FROM (SELECT daylogs404errors.day as day,
+            daylogs404errors.error_count as error_count,
+            daylogstotal.Total_Logs as totallogs
             FROM daylogstotal LEFT JOIN daylogs404errors
-            ON daylogstotal.day = daylogs404errors.day) as subquery) as subquery2
+            ON daylogstotal.day = daylogs404errors.day) as subquery)
+            as subquery2
             WHERE percentlogs > 1;"""
     rows = execute_query(query)
     print('{:<40} {:<20} {:<20} {:<20} \n'
