@@ -29,15 +29,15 @@ The python script "answers.py" answers three questions:
 	3. On which days did more than 1% of requests lead to errors?
 
 # Requirements: 
-	1. Vagrant 
-		* https://www.vagrantup.com/downloads.html
-	2. VirtualBox 
-		* https://www.virtualbox.org/
+1. Vagrant 
+	* https://www.vagrantup.com/downloads.html
+2. VirtualBox 
+	* https://www.virtualbox.org/
 
-	If not relying on vagrant, set up environment with: 
-	1. Python 2.7 
-	2. PostgreSQL 
-	3. psycopg2
+If not relying on vagrant, set up environment with: 
+1. Python 2.7 
+2. PostgreSQL 
+3. psycopg2
 
 # How to create the news database: 
 ## Setting up the virtual environment: 
@@ -57,6 +57,14 @@ The python script "answers.py" answers three questions:
 
 # Required Views 
 In order to run the code, you will need to have these views: 
+
+## Option 1: 
+Type "psql -d news -f create_views.sql" in the command line interface 
+with create_views.sql located in the vagrant folder. 
+
+## Option 2
+Run each of these views individually:
+
 
 1. CREATE VIEW titlecount  
 AS SELECT title, COUNT(*) as count 
@@ -79,7 +87,7 @@ ON titlecount.title = articles.title;
 3. CREATE VIEW authoridsum AS 
 SELECT authortitlecount.author, SUM(count) 
 FROM authortitlecount 
-FROUP BY author 
+GROUP BY author 
 ORDER BY SUM(count) DESC;
 > This view holds the author IDs and the sum of the counts of each author IDs articles.
   
